@@ -327,11 +327,15 @@ public:
 
 vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
 {
-    vector<City> closedCities;
-    vector<City> openCities;
+    // Intiailzing necessary containers
+    vector<City> closedCities,
+        openCities,
+        neighbors;
     City originCity(0, 0.0);
     City currentCity = originCity;
-    vector<City> neighbors;
+
+    // Control statement to support testing data
+    // Retrieving initial neighboring cities for currentCity
     if (testing)
     {
         neighbors = cityMapObj.GetNeighbors(currentCity, true);
@@ -341,14 +345,17 @@ vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
         neighbors = cityMapObj.GetNeighbors(currentCity);
     }
 
+    // Adding initial neighbor cities to openCities
     for (int i = 0; i < neighbors.size(); ++i)
     {
         openCities.push_back(neighbors[i]);
     }
 
-    openCities = cityMapObj.SortCitiesDesc(openCities);
-
+    // Adding originCity to closedCities
     closedCities.push_back(originCity);
+
+    // Sorting openCities by distance
+    openCities = cityMapObj.SortCitiesDesc(openCities);
 
     while (openCities.size())
     {
@@ -396,6 +403,7 @@ vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
         openCities = cityMapObj.SortCitiesDesc(openCities);
     }
 
+    // Returning closedCities containing dijkstras shortest paths
     return closedCities;
 }
 

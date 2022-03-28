@@ -407,33 +407,41 @@ vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
     return closedCities;
 }
 
+double averagePathLengths(vector<City> cities)
+{
+    // Initialize sum container
+    double sum = 0.0;
+
+    // Add all distances in cities
+    for (vector<City>::iterator i = cities.begin(); i != cities.end(); ++i)
+    {
+        sum += (*i).distance;
+    }
+
+    // Calculate avg using sum of distances
+    double avg = sum / (cities.size() - 1);
+
+    return avg;
+}
+
 int main(void)
 {
     // Hard assign size & density
     int size = 9;
     float density = .40;
 
-    // Generate graph & print
+    // Generate graph
     CityMap cityMap(size, density);
+
+    // Calculate shortest paths using dijkstras algorithms
     vector<City> dijkstrasShortestPath = dijkstras(cityMap);
     vector<City> testDijkstrasShortestPath = dijkstras(cityMap, true);
-    double sum = 0.0,
-           testSum = 0.0;
-    cout << "dijkstrasShortestPath:" << endl;
-    for (vector<City>::iterator i = dijkstrasShortestPath.begin(); i != dijkstrasShortestPath.end(); ++i)
-    {
-        sum += (*i).distance;
-    }
-    for (vector<City>::iterator i = testDijkstrasShortestPath.begin(); i != testDijkstrasShortestPath.end(); ++i)
-    {
-        testSum += (*i).distance;
-    }
-    double testAvg = testSum / (testDijkstrasShortestPath.size() - 1);
-    cout << "testDijkstrasShortestPath sum: " << testSum << endl;
-    cout << "testDijkstrasShortestPath avg: " << testAvg << endl;
 
-    double avg = sum / (dijkstrasShortestPath.size() - 1);
-    cout << "dijkstrasShortestPath sum: " << sum << endl;
-    cout << "dijkstrasShortestPath avg: " << avg << endl;
+    // Calculate averages for paths
+    double avg = averagePathLengths(dijkstrasShortestPath);
+    double testAvg = averagePathLengths(testDijkstrasShortestPath);
+
+    cout << "avg: " << avg << endl;
+    cout << "testAvg: " << testAvg << endl;
     return 0;
 }

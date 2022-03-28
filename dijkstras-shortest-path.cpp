@@ -432,15 +432,7 @@ vector<City> dijkstras(CityMap cityMapObj)
         // Sort cities by descending order
         openCities = cityMapObj.SortCitiesDesc(openCities);
     }
-    // Print cities in openSet
 
-    cout << "closedCities END:" << endl;
-    for (int i = 0; i < closedCities.size(); ++i)
-    {
-        cout << "\tindex i: " << i << endl;
-        cout << "\tclosedCities[i].index: " << closedCities[i].index << endl;
-        cout << "\tclosedCities[i].distance: " << closedCities[i].distance << endl;
-    }
     return closedCities;
 }
 
@@ -454,8 +446,19 @@ int main(void)
     CityMap cityMap(size, density);
     cityMap.printConnectivityMatrix();
     cityMap.printDistanceMatrix();
-    dijkstras(cityMap);
-
+    vector<City> dijkstrasShortestPath = dijkstras(cityMap);
+    double sum;
+    cout << "dijkstrasShortestPath:" << endl;
+    for (int i = 0; i < dijkstrasShortestPath.size(); ++i)
+    {
+        cout << "\tindex i: " << i << endl;
+        cout << "\tdijkstrasShortestPath[i].index: " << dijkstrasShortestPath[i].index << endl;
+        cout << "\tdijkstrasShortestPath[i].distance: " << dijkstrasShortestPath[i].distance << endl;
+        sum += dijkstrasShortestPath[i].distance;
+    }
+    double avg = sum / (dijkstrasShortestPath.size() - 1);
+    cout << "dijkstrasShortestPath sum: " << sum << endl;
+    cout << "dijkstrasShortestPath avg: " << avg << endl;
     return 0;
 }
 

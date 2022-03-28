@@ -333,33 +333,14 @@ vector<City> dijkstras(CityMap cityMapObj)
         openCities.push_back(neighbors[i]);
     }
 
-    // Print neighbors found
-    // cout << "NEIGHBORDS FOUND:" << endl;
-    // for (int i = 0; i < neighbors.size(); ++i)
-    // {
-    //     cout << "\tindex i: " << i << endl;
-    //     cout << "\tneighbors[i].index: " << neighbors[i].index << endl;
-    //     cout << "\tneighbors[i].distance: " << neighbors[i].distance << endl;
-    // }
-
     openCities = cityMapObj.SortCitiesDesc(openCities);
 
     closedCities.push_back(originCity);
-    // Print cities in openSet
-    // cout << "openCities CURRENTLY:" << endl;
-    // for (int i = 0; i < openCities.size(); ++i)
-    // {
-    //     cout << "\tindex i: " << i << endl;
-    //     cout << "\topenCities[i].index: " << openCities[i].index << endl;
-    //     cout << "\topenCities[i].distance: " << openCities[i].distance << endl;
-    // }
 
     while (openCities.size())
     {
         // Find the lowest distance city in openCities
         City lowestDistCity = openCities.back();
-        // cout << "lowestDistCity.index: " << lowestDistCity.index << endl;
-        // cout << "lowestDistCity.distance: " << lowestDistCity.distance << endl;
 
         // Move lowest distance city from openCities to closedCities
         openCities.pop_back();
@@ -367,10 +348,6 @@ vector<City> dijkstras(CityMap cityMapObj)
 
         // Reassign currentCity to lowestDistCity
         currentCity = lowestDistCity;
-
-        cout << "CURRENT CITY UPDATED:" << endl;
-        cout << "currentCity.index: " << currentCity.index << endl;
-        cout << "currentCity.distance: " << currentCity.distance << endl;
 
         // Find neighbors of currentCity
         neighbors = cityMapObj.GetNeighbors(currentCity);
@@ -398,30 +375,8 @@ vector<City> dijkstras(CityMap cityMapObj)
                 else
                 {
                     openCities = cityMapObj.UpdateNeighborInCities(openCities, neighbor);
-                    cout << "UPDATE: --------  UpdateNeighborInCities:" << endl;
-                    for (int i = 0; i < openCities.size(); ++i)
-                    {
-                        cout << "\tindex i: " << i << endl;
-                        cout << "\topenCities[i].index: " << openCities[i].index << endl;
-                        cout << "\topenCities[i].distance: " << openCities[i].distance << endl;
-                    }
                 }
             }
-        }
-        // Print cities in openSet
-        cout << "XXxxXXXXxxXXxxxX openCities UPDATED XxxxxxxxXXxx:" << endl;
-        for (int i = 0; i < openCities.size(); ++i)
-        {
-            cout << "\tindex i: " << i << endl;
-            cout << "\topenCities[i].index: " << openCities[i].index << endl;
-            cout << "\topenCities[i].distance: " << openCities[i].distance << endl;
-        }
-        cout << "``````````````CLOSED CITIES UPDATED ```````````:" << endl;
-        for (int i = 0; i < closedCities.size(); ++i)
-        {
-            cout << "\tindex i: " << i << endl;
-            cout << "\tclosedCities[i].index: " << closedCities[i].index << endl;
-            cout << "\tclosedCities[i].distance: " << closedCities[i].distance << endl;
         }
 
         // Sort cities by descending order

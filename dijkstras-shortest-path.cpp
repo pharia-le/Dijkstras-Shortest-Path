@@ -35,12 +35,7 @@
 
 #include <iostream>
 #include <vector>
-#include <utility>
-#include <queue>
 #include <iterator>
-#include <map>
-#include <set>
-#include <algorithm>
 using namespace std;
 
 class City
@@ -447,14 +442,14 @@ int main(void)
     cityMap.printConnectivityMatrix();
     cityMap.printDistanceMatrix();
     vector<City> dijkstrasShortestPath = dijkstras(cityMap);
-    double sum;
+    double sum = 0.0;
     cout << "dijkstrasShortestPath:" << endl;
-    for (int i = 0; i < dijkstrasShortestPath.size(); ++i)
+    for (vector<City>::iterator i = dijkstrasShortestPath.begin(); i != dijkstrasShortestPath.end(); ++i)
     {
-        cout << "\tindex i: " << i << endl;
-        cout << "\tdijkstrasShortestPath[i].index: " << dijkstrasShortestPath[i].index << endl;
-        cout << "\tdijkstrasShortestPath[i].distance: " << dijkstrasShortestPath[i].distance << endl;
-        sum += dijkstrasShortestPath[i].distance;
+        cout << "\t(*i).index: " << (*i).index << endl;
+        cout << "\t(*i).distance: " << (*i).distance << endl;
+        sum += (*i).distance;
+        cout << "dijkstrasShortestPath sum: " << sum << endl;
     }
     double avg = sum / (dijkstrasShortestPath.size() - 1);
     cout << "dijkstrasShortestPath sum: " << sum << endl;

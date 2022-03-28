@@ -66,42 +66,42 @@ private:
     bool **testConnectivityMatrix;
     float **testDistanceMatrix;
 
-    // void generateMatrices()
-    // {
-    //     srand(time(0));
-    //     connectivityMatrix = new bool *[size];
-    //     for (int i = 0; i < size; ++i)
-    //     {
-    //         connectivityMatrix[i] = new bool[size];
-    //     }
+    void generateMatrices()
+    {
+        srand(time(0));
+        connectivityMatrix = new bool *[size];
+        for (int i = 0; i < size; ++i)
+        {
+            connectivityMatrix[i] = new bool[size];
+        }
 
-    //     distanceMatrix = new float *[size];
-    //     for (int i = 0; i < size; ++i)
-    //     {
-    //         distanceMatrix[i] = new float[size];
-    //     }
+        distanceMatrix = new float *[size];
+        for (int i = 0; i < size; ++i)
+        {
+            distanceMatrix[i] = new float[size];
+        }
 
-    //     for (int j = 0; j < size; ++j)
-    //     {
-    //         for (int k = 0; k < size; ++k)
-    //         {
-    //             if (j != k && k > j)
-    //             {
-    //                 int x = rand() % 100;
-    //                 if (x < density * 100)
-    //                 {
-    //                     int randVal = rand() / 100;
-    //                     int randMax = RAND_MAX / 100;
-    //                     float d = static_cast<float>((90 * randVal) / randMax) / 10 + 1;
-    //                     connectivityMatrix[j][k] = 1;
-    //                     connectivityMatrix[k][j] = 1;
-    //                     distanceMatrix[j][k] = d;
-    //                     distanceMatrix[k][j] = d;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+        for (int j = 0; j < size; ++j)
+        {
+            for (int k = 0; k < size; ++k)
+            {
+                if (j != k && k > j)
+                {
+                    int x = rand() % 100;
+                    if (x < density * 100)
+                    {
+                        int randVal = rand() / 100;
+                        int randMax = RAND_MAX / 100;
+                        float d = static_cast<float>((90 * randVal) / randMax) / 10 + 1;
+                        connectivityMatrix[j][k] = 1;
+                        connectivityMatrix[k][j] = 1;
+                        distanceMatrix[j][k] = d;
+                        distanceMatrix[k][j] = d;
+                    }
+                }
+            }
+        }
+    }
 
 public:
     CityMap(int s, float d)
@@ -109,7 +109,7 @@ public:
         size = s;
         density = d;
         generateMatrices();
-        // generateTestMatrices();
+        generateTestMatrices();
     }
 
     // ~CityMap()
@@ -149,8 +149,13 @@ public:
         }
     }
 
-    vector<City> GetNeighbors(City currentCity)
+    vector<City> GetNeighbors(City currentCity, bool testing = false)
     {
+        if (testing)
+        {
+            connectivityMatrix = testConnectivityMatrix;
+            distanceMatrix = testDistanceMatrix;
+        }
         vector<City> neighbors;
         for (int i = 0; i < size; ++i)
         {
@@ -194,78 +199,78 @@ public:
         }
     }
 
-    void generateMatrices()
+    void generateTestMatrices()
     {
         srand(time(0));
-        connectivityMatrix = new bool *[9];
+        testConnectivityMatrix = new bool *[9];
         for (int i = 0; i < 9; ++i)
         {
-            connectivityMatrix[i] = new bool[9];
+            testConnectivityMatrix[i] = new bool[9];
         }
 
-        distanceMatrix = new float *[9];
+        testDistanceMatrix = new float *[9];
         for (int i = 0; i < 9; ++i)
         {
-            distanceMatrix[i] = new float[9];
+            testDistanceMatrix[i] = new float[9];
         }
 
-        connectivityMatrix[0][1] = true;
-        connectivityMatrix[0][7] = true;
-        connectivityMatrix[1][0] = true;
-        connectivityMatrix[1][7] = true;
-        connectivityMatrix[1][2] = true;
-        connectivityMatrix[2][1] = true;
-        connectivityMatrix[2][8] = true;
-        connectivityMatrix[2][5] = true;
-        connectivityMatrix[2][3] = true;
-        connectivityMatrix[3][2] = true;
-        connectivityMatrix[3][5] = true;
-        connectivityMatrix[3][4] = true;
-        connectivityMatrix[4][3] = true;
-        connectivityMatrix[4][5] = true;
-        connectivityMatrix[5][6] = true;
-        connectivityMatrix[5][2] = true;
-        connectivityMatrix[5][3] = true;
-        connectivityMatrix[5][4] = true;
-        connectivityMatrix[6][7] = true;
-        connectivityMatrix[6][8] = true;
-        connectivityMatrix[6][5] = true;
-        connectivityMatrix[7][0] = true;
-        connectivityMatrix[7][1] = true;
-        connectivityMatrix[7][8] = true;
-        connectivityMatrix[7][6] = true;
-        connectivityMatrix[8][7] = true;
-        connectivityMatrix[8][2] = true;
-        connectivityMatrix[8][6] = true;
+        testConnectivityMatrix[0][1] = true;
+        testConnectivityMatrix[0][7] = true;
+        testConnectivityMatrix[1][0] = true;
+        testConnectivityMatrix[1][7] = true;
+        testConnectivityMatrix[1][2] = true;
+        testConnectivityMatrix[2][1] = true;
+        testConnectivityMatrix[2][8] = true;
+        testConnectivityMatrix[2][5] = true;
+        testConnectivityMatrix[2][3] = true;
+        testConnectivityMatrix[3][2] = true;
+        testConnectivityMatrix[3][5] = true;
+        testConnectivityMatrix[3][4] = true;
+        testConnectivityMatrix[4][3] = true;
+        testConnectivityMatrix[4][5] = true;
+        testConnectivityMatrix[5][6] = true;
+        testConnectivityMatrix[5][2] = true;
+        testConnectivityMatrix[5][3] = true;
+        testConnectivityMatrix[5][4] = true;
+        testConnectivityMatrix[6][7] = true;
+        testConnectivityMatrix[6][8] = true;
+        testConnectivityMatrix[6][5] = true;
+        testConnectivityMatrix[7][0] = true;
+        testConnectivityMatrix[7][1] = true;
+        testConnectivityMatrix[7][8] = true;
+        testConnectivityMatrix[7][6] = true;
+        testConnectivityMatrix[8][7] = true;
+        testConnectivityMatrix[8][2] = true;
+        testConnectivityMatrix[8][6] = true;
 
-        distanceMatrix[0][1] = 4;
-        distanceMatrix[0][7] = 8;
-        distanceMatrix[1][0] = 4;
-        distanceMatrix[1][7] = 11;
-        distanceMatrix[1][2] = 8;
-        distanceMatrix[2][1] = 8;
-        distanceMatrix[2][8] = 2;
-        distanceMatrix[2][5] = 4;
-        distanceMatrix[2][3] = 7;
-        distanceMatrix[3][2] = 7;
-        distanceMatrix[3][5] = 14;
-        distanceMatrix[3][4] = 9;
-        distanceMatrix[4][3] = 9;
-        distanceMatrix[4][5] = 10;
-        distanceMatrix[5][6] = 2;
-        distanceMatrix[5][2] = 4;
-        distanceMatrix[5][3] = 14;
-        distanceMatrix[5][4] = 10;
-        distanceMatrix[6][7] = 1;
-        distanceMatrix[6][8] = 6;
-        distanceMatrix[6][5] = 2;
-        distanceMatrix[7][0] = 8;
-        distanceMatrix[7][1] = 11;
-        distanceMatrix[7][8] = 7;
-        distanceMatrix[7][6] = 1;
-        distanceMatrix[8][7] = 7;
-        distanceMatrix[8][2] = 2;
-        distanceMatrix[8][6] = 6;
+        testDistanceMatrix[0][1] = 4;
+        testDistanceMatrix[0][7] = 8;
+        testDistanceMatrix[1][0] = 4;
+        testDistanceMatrix[1][7] = 11;
+        testDistanceMatrix[1][2] = 8;
+        testDistanceMatrix[2][1] = 8;
+        testDistanceMatrix[2][8] = 2;
+        testDistanceMatrix[2][5] = 4;
+        testDistanceMatrix[2][3] = 7;
+        testDistanceMatrix[3][2] = 7;
+        testDistanceMatrix[3][5] = 14;
+        testDistanceMatrix[3][4] = 9;
+        testDistanceMatrix[4][3] = 9;
+        testDistanceMatrix[4][5] = 10;
+        testDistanceMatrix[5][6] = 2;
+        testDistanceMatrix[5][2] = 4;
+        testDistanceMatrix[5][3] = 14;
+        testDistanceMatrix[5][4] = 10;
+        testDistanceMatrix[6][7] = 1;
+        testDistanceMatrix[6][8] = 6;
+        testDistanceMatrix[6][5] = 2;
+        testDistanceMatrix[7][0] = 8;
+        testDistanceMatrix[7][1] = 11;
+        testDistanceMatrix[7][8] = 7;
+        testDistanceMatrix[7][6] = 1;
+        testDistanceMatrix[8][7] = 7;
+        testDistanceMatrix[8][2] = 2;
+        testDistanceMatrix[8][6] = 6;
     }
 
     int GetIdxOfShortestDistanceCity(vector<City> openCities)
@@ -320,13 +325,21 @@ public:
     }
 };
 
-vector<City> dijkstras(CityMap cityMapObj)
+vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
 {
     vector<City> closedCities;
     vector<City> openCities;
     City originCity(0, 0.0);
     City currentCity = originCity;
-    vector<City> neighbors = cityMapObj.GetNeighbors(currentCity);
+    vector<City> neighbors;
+    if (testing)
+    {
+        neighbors = cityMapObj.GetNeighbors(currentCity, true);
+    }
+    else
+    {
+        neighbors = cityMapObj.GetNeighbors(currentCity);
+    }
 
     for (int i = 0; i < neighbors.size(); ++i)
     {
@@ -394,33 +407,25 @@ int main(void)
 
     // Generate graph & print
     CityMap cityMap(size, density);
-    cityMap.printConnectivityMatrix();
-    cityMap.printDistanceMatrix();
     vector<City> dijkstrasShortestPath = dijkstras(cityMap);
-    double sum = 0.0;
+    vector<City> testDijkstrasShortestPath = dijkstras(cityMap, true);
+    double sum = 0.0,
+           testSum = 0.0;
     cout << "dijkstrasShortestPath:" << endl;
     for (vector<City>::iterator i = dijkstrasShortestPath.begin(); i != dijkstrasShortestPath.end(); ++i)
     {
-        cout << "\t(*i).index: " << (*i).index << endl;
-        cout << "\t(*i).distance: " << (*i).distance << endl;
         sum += (*i).distance;
-        cout << "dijkstrasShortestPath sum: " << sum << endl;
     }
+    for (vector<City>::iterator i = testDijkstrasShortestPath.begin(); i != testDijkstrasShortestPath.end(); ++i)
+    {
+        testSum += (*i).distance;
+    }
+    double testAvg = testSum / (testDijkstrasShortestPath.size() - 1);
+    cout << "testDijkstrasShortestPath sum: " << testSum << endl;
+    cout << "testDijkstrasShortestPath avg: " << testAvg << endl;
+
     double avg = sum / (dijkstrasShortestPath.size() - 1);
     cout << "dijkstrasShortestPath sum: " << sum << endl;
     cout << "dijkstrasShortestPath avg: " << avg << endl;
     return 0;
 }
-
-// Vertex   Distance from Source
-// 0                0
-// 1                4
-// 2                12
-// 3                19
-// 4                21
-// 5                11
-// 6                9
-// 7                8
-// 8                14
-
-// 98 / 8 = 12.25

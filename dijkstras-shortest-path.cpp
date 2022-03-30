@@ -36,6 +36,8 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <algorithm>
+
 using namespace std;
 
 class City
@@ -63,24 +65,32 @@ private:
     float density;
     bool **connectivityMatrix;
     float **distanceMatrix;
-    bool **testConnectivityMatrix;
-    float **testDistanceMatrix;
 
     void generateMatrices()
     {
-        srand(time(0));
-        connectivityMatrix = new bool *[size];
+        connectivityMatrix = new bool* [size];
+        distanceMatrix = new float* [size];
         for (int i = 0; i < size; ++i)
         {
             connectivityMatrix[i] = new bool[size];
-        }
-
-        distanceMatrix = new float *[size];
-        for (int i = 0; i < size; ++i)
-        {
             distanceMatrix[i] = new float[size];
         }
 
+        for (int j = 0; j < size; ++j)
+        {
+            for (int k = 0; k < size; ++k)
+            {
+                connectivityMatrix[j][k] = false;
+                connectivityMatrix[k][j] = false;
+                distanceMatrix[j][k] = 0;
+                distanceMatrix[k][j] = 0;
+            }
+        }
+    }
+
+    void populateMatricesWithRandomData()
+    {
+        srand(static_cast<unsigned int>(time(0)));
         for (int j = 0; j < size; ++j)
         {
             for (int k = 0; k < size; ++k)
@@ -104,12 +114,22 @@ private:
     }
 
 public:
+    //default constructor for test data matrices
+    CityMap()
+    {
+        size = 9;
+        density = 0;
+        generateMatrices();
+        populateMatricesWithTestData();
+    }
+
+    //default constructor to generate random data matrices
     CityMap(int s, float d)
     {
         size = s;
         density = d;
         generateMatrices();
-        generateTestMatrices();
+        populateMatricesWithRandomData();
     }
 
     // ~CityMap()
@@ -123,10 +143,8 @@ public:
     //     delete distanceMatrix;
     // }
 
-    void printConnectivityMatrix(bool testing = false)
+    void printConnectivityMatrix()
     {
-        if (testing)
-            connectivityMatrix = testConnectivityMatrix;
         cout << "Connectivity Matrix" << endl;
         for (int j = 0; j < size; ++j)
         {
@@ -138,10 +156,8 @@ public:
         }
     }
 
-    void printDistanceMatrix(bool testing = false)
+    void printDistanceMatrix()
     {
-        if (testing)
-            distanceMatrix = testDistanceMatrix;
         cout << "Distance Matrix" << endl;
         for (int l = 0; l < size; ++l)
         {
@@ -153,13 +169,8 @@ public:
         }
     }
 
-    vector<City> GetNeighbors(City currentCity, bool testing = false)
+    vector<City> GetNeighbors(City currentCity)
     {
-        if (testing)
-        {
-            connectivityMatrix = testConnectivityMatrix;
-            distanceMatrix = testDistanceMatrix;
-        }
         vector<City> neighbors;
         for (int i = 0; i < size; ++i)
         {
@@ -177,110 +188,71 @@ public:
         return size;
     }
 
-    void printTestConnectivityMatrix()
+    void populateMatricesWithTestData()
     {
-        cout << "Test Connectivity Matrix" << endl;
-        for (int j = 0; j < 9; ++j)
-        {
-            for (int k = 0; k < 9; ++k)
-            {
-                cout << testConnectivityMatrix[j][k] << "\t";
-            }
-            cout << endl;
-        }
-    }
-
-    void printTestDistanceMatrix()
-    {
-        cout << "Test Distance Matrix" << endl;
-        for (int l = 0; l < 9; ++l)
-        {
-            for (int m = 0; m < 9; ++m)
-            {
-                cout << testDistanceMatrix[l][m] << "\t";
-            }
-            cout << endl;
-        }
-    }
-
-    void generateTestMatrices()
-    {
-        srand(time(0));
-        testConnectivityMatrix = new bool *[9];
-        for (int i = 0; i < 9; ++i)
-        {
-            testConnectivityMatrix[i] = new bool[9];
-        }
-
-        testDistanceMatrix = new float *[9];
-        for (int i = 0; i < 9; ++i)
-        {
-            testDistanceMatrix[i] = new float[9];
-        }
-
-        testConnectivityMatrix[0][1] = true;
-        testConnectivityMatrix[0][7] = true;
-        testConnectivityMatrix[1][0] = true;
-        testConnectivityMatrix[1][7] = true;
-        testConnectivityMatrix[1][2] = true;
-        testConnectivityMatrix[2][1] = true;
-        testConnectivityMatrix[2][8] = true;
-        testConnectivityMatrix[2][5] = true;
-        testConnectivityMatrix[2][3] = true;
-        testConnectivityMatrix[3][2] = true;
-        testConnectivityMatrix[3][5] = true;
-        testConnectivityMatrix[3][4] = true;
-        testConnectivityMatrix[4][3] = true;
-        testConnectivityMatrix[4][5] = true;
-        testConnectivityMatrix[5][6] = true;
-        testConnectivityMatrix[5][2] = true;
-        testConnectivityMatrix[5][3] = true;
-        testConnectivityMatrix[5][4] = true;
-        testConnectivityMatrix[6][7] = true;
-        testConnectivityMatrix[6][8] = true;
-        testConnectivityMatrix[6][5] = true;
-        testConnectivityMatrix[7][0] = true;
-        testConnectivityMatrix[7][1] = true;
-        testConnectivityMatrix[7][8] = true;
-        testConnectivityMatrix[7][6] = true;
-        testConnectivityMatrix[8][7] = true;
-        testConnectivityMatrix[8][2] = true;
-        testConnectivityMatrix[8][6] = true;
-
-        testDistanceMatrix[0][1] = 4;
-        testDistanceMatrix[0][7] = 8;
-        testDistanceMatrix[1][0] = 4;
-        testDistanceMatrix[1][7] = 11;
-        testDistanceMatrix[1][2] = 8;
-        testDistanceMatrix[2][1] = 8;
-        testDistanceMatrix[2][8] = 2;
-        testDistanceMatrix[2][5] = 4;
-        testDistanceMatrix[2][3] = 7;
-        testDistanceMatrix[3][2] = 7;
-        testDistanceMatrix[3][5] = 14;
-        testDistanceMatrix[3][4] = 9;
-        testDistanceMatrix[4][3] = 9;
-        testDistanceMatrix[4][5] = 10;
-        testDistanceMatrix[5][6] = 2;
-        testDistanceMatrix[5][2] = 4;
-        testDistanceMatrix[5][3] = 14;
-        testDistanceMatrix[5][4] = 10;
-        testDistanceMatrix[6][7] = 1;
-        testDistanceMatrix[6][8] = 6;
-        testDistanceMatrix[6][5] = 2;
-        testDistanceMatrix[7][0] = 8;
-        testDistanceMatrix[7][1] = 11;
-        testDistanceMatrix[7][8] = 7;
-        testDistanceMatrix[7][6] = 1;
-        testDistanceMatrix[8][7] = 7;
-        testDistanceMatrix[8][2] = 2;
-        testDistanceMatrix[8][6] = 6;
+        connectivityMatrix[0][1] = true;
+        connectivityMatrix[0][7] = true;
+        connectivityMatrix[1][0] = true;
+        connectivityMatrix[1][7] = true;
+        connectivityMatrix[1][2] = true;
+        connectivityMatrix[2][1] = true;
+        connectivityMatrix[2][8] = true;
+        connectivityMatrix[2][5] = true;
+        connectivityMatrix[2][3] = true;
+        connectivityMatrix[3][2] = true;
+        connectivityMatrix[3][5] = true;
+        connectivityMatrix[3][4] = true;
+        connectivityMatrix[4][3] = true;
+        connectivityMatrix[4][5] = true;
+        connectivityMatrix[5][6] = true;
+        connectivityMatrix[5][2] = true;
+        connectivityMatrix[5][3] = true;
+        connectivityMatrix[5][4] = true;
+        connectivityMatrix[6][7] = true;
+        connectivityMatrix[6][8] = true;
+        connectivityMatrix[6][5] = true;
+        connectivityMatrix[7][0] = true;
+        connectivityMatrix[7][1] = true;
+        connectivityMatrix[7][8] = true;
+        connectivityMatrix[7][6] = true;
+        connectivityMatrix[8][7] = true;
+        connectivityMatrix[8][2] = true;
+        connectivityMatrix[8][6] = true;
+        
+        distanceMatrix[0][1] = 4;
+        distanceMatrix[0][7] = 8;
+        distanceMatrix[1][0] = 4;
+        distanceMatrix[1][7] = 11;
+        distanceMatrix[1][2] = 8;
+        distanceMatrix[2][1] = 8;
+        distanceMatrix[2][8] = 2;
+        distanceMatrix[2][5] = 4;
+        distanceMatrix[2][3] = 7;
+        distanceMatrix[3][2] = 7;
+        distanceMatrix[3][5] = 14;
+        distanceMatrix[3][4] = 9;
+        distanceMatrix[4][3] = 9;
+        distanceMatrix[4][5] = 10;
+        distanceMatrix[5][6] = 2;
+        distanceMatrix[5][2] = 4;
+        distanceMatrix[5][3] = 14;
+        distanceMatrix[5][4] = 10;
+        distanceMatrix[6][7] = 1;
+        distanceMatrix[6][8] = 6;
+        distanceMatrix[6][5] = 2;
+        distanceMatrix[7][0] = 8;
+        distanceMatrix[7][1] = 11;
+        distanceMatrix[7][8] = 7;
+        distanceMatrix[7][6] = 1;
+        distanceMatrix[8][7] = 7;
+        distanceMatrix[8][2] = 2;
+        distanceMatrix[8][6] = 6;
     }
 
     int GetIdxOfShortestDistanceCity(vector<City> openCities)
     {
         float shortestDist = INFINITY;
-        int tempCityIdx;
+        int tempCityIdx = -1;
         for (int m = 0; m < openCities.size(); ++m)
         {
             if (openCities[m].distance < shortestDist)
@@ -329,7 +301,7 @@ public:
     }
 };
 
-vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
+vector<City> dijkstras(CityMap cityMapObj)
 {
     // Intiailzing necessary containers
     vector<City> closedCities,
@@ -338,17 +310,9 @@ vector<City> dijkstras(CityMap cityMapObj, bool testing = false)
     City originCity(0, 0.0);
     City currentCity = originCity;
 
-    // Control statement to support testing data
     // Retrieving initial neighboring cities for currentCity
-    if (testing)
-    {
-        neighbors = cityMapObj.GetNeighbors(currentCity, true);
-    }
-    else
-    {
-        neighbors = cityMapObj.GetNeighbors(currentCity);
-    }
-
+    neighbors = cityMapObj.GetNeighbors(currentCity);
+    
     // Adding initial neighbor cities to openCities
     for (int i = 0; i < neighbors.size(); ++i)
     {
@@ -437,30 +401,31 @@ int main(void)
     double density2 = .40;
 
     // Generate graph
-    CityMap cityMap1(size1, density1);
-    CityMap cityMap2(size2, density2);
+    CityMap cityMap0;
+    //CityMap cityMap1(size1, density1);
+    //CityMap cityMap2(size2, density2);
 
     // Calculate shortest paths using dijkstras algorithms
-    vector<City> dijkstrasShortestPath1 = dijkstras(cityMap1);
-    vector<City> testDijkstrasShortestPath = dijkstras(cityMap1, true);
-    vector<City> dijkstrasShortestPath2 = dijkstras(cityMap2);
+    vector<City> testDijkstrasShortestPath = dijkstras(cityMap0);
+    //vector<City> dijkstrasShortestPath1 = dijkstras(cityMap1);
+    //vector<City> dijkstrasShortestPath2 = dijkstras(cityMap2);
 
     // Calculate averages for path lengths                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     r paths
-    double avg1 = averagePathLengths(dijkstrasShortestPath1);
-    double avg2 = averagePathLengths(dijkstrasShortestPath2);
     double testAvg = averagePathLengths(testDijkstrasShortestPath);
-
+    //double avg1 = averagePathLengths(dijkstrasShortestPath1);
+    //double avg2 = averagePathLengths(dijkstrasShortestPath2);
+    
     // Print graphs & calculated avg path lengths
     cout << "----------------------------------------------------------------" << endl;
     cout << "------------------------- Testing Data -------------------------" << endl;
     cout << "----------------------------------------------------------------" << endl;
-    cityMap1.printConnectivityMatrix(true);
-    cityMap1.printDistanceMatrix(true);
+    cityMap0.printConnectivityMatrix();
+    cityMap0.printDistanceMatrix();
     cout << "----------------------------------------------------------------" << endl;
     cout << "Dijkstras Shortest Path Lengths Average: " << testAvg << endl;
     cout << "----------------------------------------------------------------\n\n";
 
-    cout << "----------------------------------------------------------------" << endl;
+    /*cout << "----------------------------------------------------------------" << endl;
     cout << "------------------- Size: 50 & Density: 20% -------------------" << endl;
     cout << "----------------------------------------------------------------" << endl;
     cityMap1.printConnectivityMatrix();
@@ -477,5 +442,6 @@ int main(void)
     cout << "----------------------------------------------------------------" << endl;
     cout << "Dijkstras Shortest Path Lengths Average: " << avg2 << endl;
     cout << "----------------------------------------------------------------\n\n";
+    */
     return 0;
 }

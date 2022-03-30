@@ -396,24 +396,24 @@ int main(void)
 {
     // Hard assign size & density
     int size1 = 9;
-    double density1 = .20;
     int size2 = 9;
+    double density1 = .20;
     double density2 = .40;
 
     // Generate graph
     CityMap cityMap0;
-    //CityMap cityMap1(size1, density1);
-    //CityMap cityMap2(size2, density2);
+    CityMap cityMap1(size1, density1);
+    CityMap cityMap2(size2, density2);
 
     // Calculate shortest paths using dijkstras algorithms
-    vector<City> testDijkstrasShortestPath = dijkstras(cityMap0);
-    //vector<City> dijkstrasShortestPath1 = dijkstras(cityMap1);
-    //vector<City> dijkstrasShortestPath2 = dijkstras(cityMap2);
+    vector<City> dijkstrasShortestPath0 = dijkstras(cityMap0);
+    vector<City> dijkstrasShortestPath1 = dijkstras(cityMap1);
+    vector<City> dijkstrasShortestPath2 = dijkstras(cityMap2);
 
     // Calculate averages for path lengths                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     r paths
-    double testAvg = averagePathLengths(testDijkstrasShortestPath);
-    //double avg1 = averagePathLengths(dijkstrasShortestPath1);
-    //double avg2 = averagePathLengths(dijkstrasShortestPath2);
+    double avg0 = averagePathLengths(dijkstrasShortestPath0);
+    double avg1 = averagePathLengths(dijkstrasShortestPath1);
+    double avg2 = averagePathLengths(dijkstrasShortestPath2);
     
     // Print graphs & calculated avg path lengths
     cout << "----------------------------------------------------------------" << endl;
@@ -422,10 +422,10 @@ int main(void)
     cityMap0.printConnectivityMatrix();
     cityMap0.printDistanceMatrix();
     cout << "----------------------------------------------------------------" << endl;
-    cout << "Dijkstras Shortest Path Lengths Average: " << testAvg << endl;
+    cout << "Dijkstras Shortest Path Lengths Average: " << avg0 << endl;
     cout << "----------------------------------------------------------------\n\n";
 
-    /*cout << "----------------------------------------------------------------" << endl;
+    cout << "----------------------------------------------------------------" << endl;
     cout << "------------------- Size: 50 & Density: 20% -------------------" << endl;
     cout << "----------------------------------------------------------------" << endl;
     cityMap1.printConnectivityMatrix();
@@ -442,6 +442,5 @@ int main(void)
     cout << "----------------------------------------------------------------" << endl;
     cout << "Dijkstras Shortest Path Lengths Average: " << avg2 << endl;
     cout << "----------------------------------------------------------------\n\n";
-    */
     return 0;
 }

@@ -145,27 +145,51 @@ public:
 
     void printConnectivityMatrix()
     {
-        cout << "Connectivity Matrix" << endl;
-        for (int j = 0; j < size; ++j)
-        {
-            for (int k = 0; k < size; ++k)
-            {
-                cout << connectivityMatrix[j][k] << "\t";
+        cout << "---------------------- Connectivity Matrix ----------------------" << endl;
+       
+        int columns = 15;
+        int pages = 0;
+        if (size / 15 > 0) {
+            pages = size / 15;
+            if (size % 15 != 0) pages++;
+        } else {
+            pages = 1;
+        }
+
+        for (int p = 0; p < pages; p++) {
+            cout << "------------------------- Index " << p*columns << " - " << (min((p + 1)* columns, size)) << " -------------------------\n";
+            for (int q = 0; q < size; q++) {
+                cout << q << " | ";
+                for (int r = p * columns; r < min((p + 1)*columns, size); r++) {
+                    cout << connectivityMatrix[q][r] << " | ";
+                }
+                cout << endl;
             }
-            cout << endl;
         }
     }
 
     void printDistanceMatrix()
     {
-        cout << "Distance Matrix" << endl;
-        for (int l = 0; l < size; ++l)
-        {
-            for (int m = 0; m < size; ++m)
-            {
-                cout << distanceMatrix[l][m] << "\t";
+        cout << "---------------------- Distance Matrix ----------------------" << endl;
+        
+        int columns = 15;
+        int pages = 0;
+        if (size / 15 > 0) {
+            pages = size / 15;
+            if (size % 15 != 0) pages++;
+        } else {
+            pages = 1;
+        }
+        
+        for (int p = 0; p < pages; p++) {
+            cout << "------------------------- Index " << p*columns << " - " << min((p + 1) * columns, size) << " -------------------------\n";
+            for (int q = 0; q < size; q++) {
+                cout << q << " | ";
+                for (int r = p * columns; r < min((p + 1) * columns, size); r++) {
+                    cout << distanceMatrix[q][r] << " | ";
+                }
+                cout << endl;
             }
-            cout << endl;
         }
     }
 
@@ -395,8 +419,8 @@ double averagePathLengths(vector<City> cities)
 int main(void)
 {
     // Hard assign size & density
-    int size1 = 9;
-    int size2 = 9;
+    int size1 = 50;
+    int size2 = 50;
     double density1 = .20;
     double density2 = .40;
 
